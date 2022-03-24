@@ -1,0 +1,11 @@
+[user]
+  email = j-chan@berkeley.edu
+  name = Jason Chan
+[core]
+  autocrlf = false
+  filemode = false
+  editor = nvim
+[alias]
+  dag = log --all --oneline --decorate --graph
+[pull]
+  rebase = false
