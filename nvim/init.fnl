@@ -12,7 +12,7 @@
   (plug :windwp/nvim-autopairs)
   (plug :lewis6991/gitsigns.nvim)
   (plug :rhysd/conflict-marker.vim)
-  (plug :catppuccin/nvim)
+  (plug :catppuccin/nvim {:as :catppuccin})
   (plug-end))
 
 (macro opt [name value]
@@ -49,7 +49,6 @@
 (set vim.g.mapleader " ")
 (set vim.g.netrw_banner 0)
 (set vim.g.tex_flavor :latex)
-
 (vim.cmd "colorscheme catppuccin")
 
 (macro au [event c opts]
@@ -59,43 +58,26 @@
 
 (vim.api.nvim_create_augroup :settings {})
 (au [:CursorHold] (vim.cmd :checktime))
-(au [:BufWinEnter] (vim.notify (.. " " (vim.fn.expand "%:t"))))
+(au [:BufWinEnter] (vim.notify (vim.fn.expand "%:t")))
 (au [:TextYankPost] (vim.highlight.on_yank))
+(au [:FileType] (set vim.bo.textwidth 80) {:pattern [:tex]})
 (au [:FileType] [(set vim.bo.expandtab false)
-                 (set vim.bo.tabstop 4)
-                 (set vim.bo.shiftwidth 4)]
+                 (set vim.bo.tabstop 2)
+                 (set vim.bo.shiftwidth 2)]
     {:pattern [:go :tex]})
 
 (let [autopairs (require :nvim-autopairs)]
   (autopairs.setup {:disable_filetype [:TelescopePrompt :tex :fennel]}))
 
 (let [cmp (require :cmp)]
-  (fn feedkey [key]
-    (-> key
-        (vim.api.nvim_replace_termcodes true true true)
-        (vim.api.nvim_feedkeys "" true)))
-
-  (fn super-tab [fallback]
-    (if (cmp.visible) (cmp.select_next_item)
-        (= ((. vim.fn "vsnip#jumpable") 1) 1) (feedkey "<Plug>(vsnip-jump-next)")
-        (fallback)))
-
-  (fn super-s-tab [fallback]
-    (if (cmp.visible) (cmp.select_prev_item)
-        (= ((. vim.fn "vsnip#jumpable") -1) 1) (feedkey "<Plug>(vsnip-jump-prev)")
-        (fallback)))
-
   (cmp.setup {:snippet {:expand #((. vim.fn "vsnip#anonymous") $1.body)}
-              :mapping {:<Tab> (cmp.mapping super-tab [:i :s])
-                        :<S-Tab> (cmp.mapping super-s-tab [:i :s])
-                        :<CR> (cmp.mapping.confirm)
+              :mapping {:<CR> (cmp.mapping.confirm {:select true})
                         :<C-e> (cmp.mapping.close)
                         :<C-u> (cmp.mapping.scroll_docs -4)
                         :<C-d> (cmp.mapping.scroll_docs 4)}
               :sources [{:name :nvim_lsp}]}))
 
 (local map vim.keymap.set)
-(map :n :ga "<cmd>b#<cr>")
 
 (let [gitsigns (require :gitsigns)]
   (gitsigns.setup)
@@ -111,19 +93,15 @@
   (map [:o :x] :ih gitsigns.select_hunk))
 
 (let [treesitter (require :nvim-treesitter.configs)]
-  (treesitter.setup {:ensure_installed :maintained
+  (treesitter.setup {:ensure_installed :all
+                     :ignore_install [:phpdoc]
                      :highlight {:enable true}
                      :indent {:enable true}}))
 
 (let [telescope (require :telescope)
       themes (require :telescope.themes)
-      pickers (require :telescope.builtin)
-      actions (require :telescope.actions)]
-  (local ivy ((. themes :get_ivy) {:previewer false}))
-  (set ivy.mappings
-       {:n {:<C-u> actions.results_scrolling_up
-            :<C-d> actions.results_scrolling_down}})
-  (telescope.setup {:defaults ivy
+      pickers (require :telescope.builtin)]
+  (telescope.setup {:defaults ((. themes :get_ivy) {:previewer false})
                     :pickers {:buffers {:initial_mode :normal :sort_mru true}
                               :resume {:initial_mode :normal}
                               :git_status {:initial_mode :normal}}})
@@ -141,27 +119,27 @@
 
 (set s.on_attach
      (fn [client bufnr]
-       (let [map #(vim.keymap.set $1 $2 $3 {:buffer bufnr})
-             capable? #(. client.resolved_capabilities $1)]
-         (map :n :<leader>e vim.diagnostic.open_float)
-         (map :n "[d" vim.diagnostic.goto_prev)
-         (map :n "]d" vim.diagnostic.goto_next)
-         (when (capable? :goto_definition)
-           (map :n :gd vim.lsp.buf.definition))
-         (when (capable? :hover)
-           (map :n :K vim.lsp.buf.hover))
-         (when (capable? :signature_help)
-           (map [:n :i] :<C-k> vim.lsp.buf.signature_help))
-         (when (capable? :rename)
-           (map :n :<leader>r vim.lsp.buf.rename))
-         (when (capable? :code_action)
-           (map :n :<leader>c vim.lsp.buf.code_action))
-         (when (capable? :document_formatting)
-           (map :n :g= vim.lsp.buf.formatting))
-         (when (capable? :document_range_formatting)
-           (map :x "=" vim.lsp.buf.range_formatting))
-         (when (= client.name :clangd)
-           (map :n :gs :<cmd>ClangdSwitchSourceHeader<CR>)))))
+       (local map #(vim.keymap.set $1 $2 $3 {:buffer bufnr}))
+       (local capable? #(. client.resolved_capabilities $1))
+       (map :n :<leader>e vim.diagnostic.open_float)
+       (map :n "[d" vim.diagnostic.goto_prev)
+       (map :n "]d" vim.diagnostic.goto_next)
+       (when (capable? :goto_definition)
+         (map :n :gd vim.lsp.buf.definition))
+       (when (capable? :hover)
+         (map :n :K vim.lsp.buf.hover))
+       (when (capable? :signature_help)
+         (map [:n :i] :<C-k> vim.lsp.buf.signature_help))
+       (when (capable? :rename)
+         (map :n :<leader>r vim.lsp.buf.rename))
+       (when (capable? :code_action)
+         (map :n :<leader>c vim.lsp.buf.code_action))
+       (when (capable? :document_formatting)
+         (map :n :g= vim.lsp.buf.formatting))
+       (when (capable? :document_range_formatting)
+         (map :x "=" vim.lsp.buf.range_formatting))
+       (when (= client.name :clangd)
+         (map :n :gs :<cmd>ClangdSwitchSourceHeader<CR>))))
 
 (set s.capabilities
      (-> (vim.lsp.protocol.make_client_capabilities)

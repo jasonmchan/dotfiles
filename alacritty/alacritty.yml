@@ -1,10 +1,11 @@
 font:
-  size: 24
+  size: 26
 window:
-  dimensions:
-    columns: 85
-    lines: 30
+  startup_mode: Maximized
   decorations: buttonless
+  padding:
+    x: 16
+    y: 4
 colors:
   primary:
     background: '0x1E1D2F'

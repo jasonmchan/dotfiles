@@ -7,5 +7,5 @@ function sync
 end
 
 function syncd
-  sync; fswatch -o $SYNCD_SRC | while read f; sync; end
+  sync; fswatch -o $SYNCD_SRC | while read; sync; end
 end

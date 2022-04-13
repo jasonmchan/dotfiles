@@ -13,11 +13,9 @@ set __fish_git_prompt_showupstream 'none'
 set fish_prompt_pwd_dir_length -1
 
 function fish_prompt
-  set split_pwd (string split -r -m1 / (prompt_pwd))
-  set_color white && echo -n "$split_pwd[1]/"
-  set_color -o cyan && echo -n $split_pwd[2]
-  set_color magenta && printf '%s ' (__fish_git_prompt)
-  set_color -o magenta && echo -n "| "
+  set_color -o white && echo -n (prompt_pwd)
+  set_color -o green && echo -n (__fish_git_prompt)
+  set_color blue && echo -n " | "
   set_color normal
 end
 
