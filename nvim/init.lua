@@ -139,20 +139,15 @@ vim.keymap.set('n', 'gr', pickers.lsp_references)
 local s = {}
 
 s.on_attach = function(client, bufnr)
-  local function mapc(m, l, r, capability)
-    if not capability or client.resolved_capabilities[capability] then
-      vim.keymap.set(m, l, r, { buffer = bufnr })
-    end
-  end
-  mapc('n', 'gd', vim.lsp.buf.definition, 'goto_definition')
-  mapc('n', 'K', vim.lsp.buf.hover, 'hover')
-  mapc({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help, 'signature_help')
-  mapc('n', '<leader>r', vim.lsp.buf.rename, 'rename')
-  mapc('n', '<leader>c', vim.lsp.buf.code_action, 'code_action')
-  mapc('n', 'g=', vim.lsp.buf.formatting, 'document_formatting')
-  mapc('x', '=', vim.lsp.buf.range_formatting, 'document_range_formatting')
+  local opts = { buffer = bufnr }
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+  vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help, opts)
+  vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', '<leader>c', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', 'g=', vim.lsp.buf.formatting, opts)
   if client.name == 'clangd' then
-    mapc('n', 'gs', '<cmd>ClangdSwitchSourceHeader<CR>')
+    vim.keymap.set('n', 'gs', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
   end
 end
 
