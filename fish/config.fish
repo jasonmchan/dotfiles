@@ -13,9 +13,9 @@ set __fish_git_prompt_showupstream 'none'
 set fish_prompt_pwd_dir_length -1
 
 function fish_prompt
-  set_color -o white && echo -n (prompt_pwd)
+  set_color -o black && echo -n (prompt_pwd)
   set_color -o green && echo -n (__fish_git_prompt)
-  set_color blue && echo -n " | "
+  set_color black && echo -n " | "
   set_color normal
 end
 
