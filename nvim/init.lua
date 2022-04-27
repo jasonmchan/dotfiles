@@ -44,32 +44,64 @@ vim.g.tex_flavor = 'latex'
 
 vim.cmd('colorscheme paper')
 
-local function au(event, callback, pattern)
-  local group = vim.api.nvim_create_augroup('settings', { clear = false })
-  local opts = { group = group, callback = callback, pattern = pattern or '*' }
-  vim.api.nvim_create_autocmd({ event }, opts)
-end
+local group = vim.api.nvim_create_augroup('settings', {})
 
-au('CursorHold', function()
-  vim.cmd('checktime')
-end)
+vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+  callback = function()
+    vim.cmd('checktime')
+  end,
+  group = group,
+})
 
-au('BufWinEnter', function()
-  vim.notify(vim.fn.expand('%:t'))
-end)
+vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
+  callback = function()
+    vim.notify(vim.fn.expand('%:t'))
+  end,
+  group = group,
+})
 
-au('TextYankPost', function()
-  vim.highlight.on_yank()
-end)
+vim.api.nvim_create_autocmd({ 'TextYankPost' }, {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = group,
+})
 
-au('FileType', function()
-  vim.bo.expandtab = false
-  vim.bo.tabstop = 2
-  vim.bo.shiftwidth = 2
-  if vim.bo.filetype == 'tex' then
-    vim.bo.textwidth = 80
-  end
-end, { 'go', 'tex' })
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = { 'go', 'tex' },
+  callback = function()
+    vim.bo.expandtab = false
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
+    if vim.bo.filetype == 'tex' then
+      vim.bo.textwidth = 80
+    end
+  end,
+  group = group,
+})
+
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead', 'BufFilePost' }, {
+  pattern = { '*.pandoc' },
+  callback = function()
+    vim.bo.filetype = 'pandoc'
+  end,
+  group = group,
+})
+
+vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+  pattern = { '*.pandoc' },
+  callback = function()
+    local infile = vim.fn.expand('%')
+    local outfile = string.format('out/%s.pdf', vim.fn.expand('%:r'))
+    require('plenary.job')
+      :new({
+        command = 'pandoc',
+        args = { infile, '-o', outfile },
+      })
+      :start()
+  end,
+  group = group,
+})
 
 require('nvim-autopairs').setup({
   disable_filetype = { 'TelescopePrompt', 'tex' },
