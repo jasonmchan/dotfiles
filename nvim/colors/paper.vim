@@ -189,7 +189,8 @@ hi! link Visual Cursor
 hi! link WildMenu PmenuSel
 
 " Diffs
-Hi DiffAdd lgreen NONE NONE
+Hi GitSignsAdd lgreen NONE NONE
+Hi DiffAdd green NONE NONE
 Hi DiffChange NONE NONE NONE
 Hi DiffDelete red NONE NONE
 Hi DiffText NONE lgreen NONE
