@@ -80,29 +80,6 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
   group = group,
 })
 
-vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead', 'BufFilePost' }, {
-  pattern = { '*.pandoc' },
-  callback = function()
-    vim.bo.filetype = 'pandoc'
-  end,
-  group = group,
-})
-
-vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
-  pattern = { '*.pandoc' },
-  callback = function()
-    local infile = vim.fn.expand('%')
-    local outfile = string.format('out/%s.pdf', vim.fn.expand('%:r'))
-    require('plenary.job')
-      :new({
-        command = 'pandoc',
-        args = { infile, '-o', outfile },
-      })
-      :start()
-  end,
-  group = group,
-})
-
 require('nvim-autopairs').setup({
   disable_filetype = { 'TelescopePrompt', 'tex' },
 })
