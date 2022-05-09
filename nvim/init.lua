@@ -73,9 +73,14 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
     vim.bo.expandtab = false
     vim.bo.tabstop = 2
     vim.bo.shiftwidth = 2
-    if vim.bo.filetype == 'tex' then
-      vim.bo.textwidth = 80
-    end
+  end,
+  group = group,
+})
+
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = { 'markdown', 'tex' },
+  callback = function()
+    vim.bo.textwidth = 80
   end,
   group = group,
 })
