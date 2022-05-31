@@ -212,3 +212,14 @@ end)
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.goto_next({ float = { border = 'rounded' } })
 end)
+
+local diagnostics_state = true
+vim.keymap.set('n', '<leader>i', function()
+  if diagnostics_state then
+    vim.diagnostic.disable()
+    diagnostics_state = false
+  else
+    vim.diagnostic.enable()
+    diagnostics_state = true
+  end
+end)
