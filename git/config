@@ -9,3 +9,5 @@
   dag = log --all --oneline --decorate --graph
 [pull]
   rebase = false
+[url "git@github.com:"]
+  insteadOf = https://github.com/
