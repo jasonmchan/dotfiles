@@ -85,6 +85,14 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
   group = group,
 })
 
+vim.api.nvim_create_autocmd({ 'FileType' }, {
+  pattern = { 'gitcommit' },
+  callback = function()
+    vim.bo.textwidth = 72
+  end,
+  group = group,
+})
+
 require('nvim-autopairs').setup({
   disable_filetype = { 'TelescopePrompt', 'tex' },
 })
