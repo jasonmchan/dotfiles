@@ -231,3 +231,5 @@ vim.keymap.set('n', '<leader>i', function()
     diagnostics_state = true
   end
 end)
+
+vim.keymap.set('n', 'ga', '<cmd>b#<cr>', { silent = true })
