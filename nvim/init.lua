@@ -11,6 +11,7 @@ plug('hrsh7th/cmp-nvim-lsp')
 plug('windwp/nvim-autopairs')
 plug('lewis6991/gitsigns.nvim')
 plug('rhysd/conflict-marker.vim')
+plug('ruifm/gitlinker.nvim')
 
 vim.fn['plug#end']()
 
@@ -102,6 +103,10 @@ require('nvim-treesitter.configs').setup({
   ignore_install = { 'phpdoc' },
   highlight = { enable = true, disable = { 'cpp' } },
   indent = { enable = true },
+})
+
+require('gitlinker').setup({
+  mappings = '<leader>l',
 })
 
 local cmp = require('cmp')
