@@ -161,7 +161,9 @@ vim.keymap.set('n', '<leader>g', pickers.live_grep)
 vim.keymap.set('n', '<leader>t', pickers.treesitter)
 vim.keymap.set('n', '<leader>;', pickers.buffers)
 vim.keymap.set('n', "<leader>'", pickers.resume)
+vim.keymap.set('n', '<leader>w', pickers.lsp_dynamic_workspace_symbols)
 vim.keymap.set('n', 'gr', pickers.lsp_references)
+vim.keymap.set('n', 'gm', pickers.lsp_implementations)
 
 local s = {}
 
