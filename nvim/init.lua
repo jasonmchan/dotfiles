@@ -12,6 +12,7 @@ plug('windwp/nvim-autopairs')
 plug('lewis6991/gitsigns.nvim')
 plug('rhysd/conflict-marker.vim')
 plug('ruifm/gitlinker.nvim')
+plug('romainl/vim-cool')
 
 vim.fn['plug#end']()
 
@@ -21,7 +22,6 @@ vim.opt.clipboard:append('unnamedplus')
 vim.opt.expandtab = true
 vim.opt.foldenable = false
 vim.opt.gdefault = true
-vim.opt.hlsearch = false
 vim.opt.ignorecase = true
 vim.opt.laststatus = 0
 vim.opt.mouse = 'a'
