@@ -174,13 +174,13 @@ s.on_attach = function(client, bufnr)
   vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help, opts)
   vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, opts)
   vim.keymap.set('n', '<leader>c', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', 'g=', vim.lsp.buf.formatting, opts)
+  vim.keymap.set('n', 'g=', vim.lsp.buf.format, opts)
   if client.name == 'clangd' then
     vim.keymap.set('n', 'gs', '<cmd>ClangdSwitchSourceHeader<CR>', opts)
   end
 end
 
-s.capabilities = require('cmp_nvim_lsp').update_capabilities(
+s.capabilities = require('cmp_nvim_lsp').default_capabilities(
   vim.lsp.protocol.make_client_capabilities()
 )
 
