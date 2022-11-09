@@ -31,3 +31,5 @@ function fish_user_key_bindings
     bind -M $mode \cf forward-char
   end
 end
+
+abbr -a unsus "git commit --amend --no-edit --date (date)"
