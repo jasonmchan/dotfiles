@@ -13,10 +13,12 @@ plug('lewis6991/gitsigns.nvim')
 plug('rhysd/conflict-marker.vim')
 plug('ruifm/gitlinker.nvim')
 plug('romainl/vim-cool')
+plug('elihunter173/dirbuf.nvim')
 
 vim.fn['plug#end']()
 
 vim.opt.breakindent = true
+
 vim.opt.breakindentopt = 'shift:2'
 vim.opt.clipboard:append('unnamedplus')
 vim.opt.expandtab = true
