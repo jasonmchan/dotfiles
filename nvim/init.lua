@@ -21,6 +21,7 @@ vim.opt.breakindent = true
 
 vim.opt.breakindentopt = 'shift:2'
 vim.opt.clipboard:append('unnamedplus')
+vim.opt.cmdheight = 0
 vim.opt.expandtab = true
 vim.opt.foldenable = false
 vim.opt.gdefault = true
