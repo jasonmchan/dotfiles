@@ -14,6 +14,7 @@ plug('rhysd/conflict-marker.vim')
 plug('ruifm/gitlinker.nvim')
 plug('romainl/vim-cool')
 plug('elihunter173/dirbuf.nvim')
+plug('nvim-lualine/lualine.nvim')
 
 vim.fn['plug#end']()
 
@@ -53,13 +54,6 @@ local group = vim.api.nvim_create_augroup('settings', {})
 vim.api.nvim_create_autocmd({ 'CursorHold' }, {
   callback = function()
     vim.cmd('checktime')
-  end,
-  group = group,
-})
-
-vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
-  callback = function()
-    vim.notify(vim.fn.expand('%:t'))
   end,
   group = group,
 })
@@ -243,3 +237,27 @@ vim.keymap.set('n', '<leader>i', function()
 end)
 
 vim.keymap.set('n', 'ga', '<cmd>b#<cr>', { silent = true })
+
+local lualine_theme = require('lualine.themes.auto')
+lualine_theme.normal.c.bg = '#f2eede'
+lualine_theme.insert.c.bg = '#f2eede'
+lualine_theme.visual.c.bg = '#f2eede'
+lualine_theme.replace.c.bg = '#f2eede'
+lualine_theme.command.c.bg = '#f2eede'
+lualine_theme.inactive.c.bg = '#f2eede'
+require('lualine').setup({
+  options = {
+    icons_enabled = false,
+    theme = lualine_theme,
+    component_separators = '',
+    section_separators = '',
+  },
+  sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename', 'searchcount'},
+    lualine_x = {'branch'},
+    lualine_y = {'diagnostics', 'diff'},
+    lualine_z = {'location'}
+  },
+})
