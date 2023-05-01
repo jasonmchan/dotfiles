@@ -32,4 +32,12 @@ function fish_user_key_bindings
   end
 end
 
+abbr -a ga "git add"
+abbr -a gaa "git add --all"
+abbr -a gc "git commit"
+abbr -a gd "git diff"
+abbr -a gs "git status"
 abbr -a unsus "git commit --amend --no-edit --date (date)"
+abbr -a v "nvim"
+abbr -a vi "nvim"
+abbr -a vim "nvim"
